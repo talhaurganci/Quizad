@@ -1,4 +1,5 @@
 Quizad is a question and answer application developed by Talha Urgancı under the supervision of Ali Erdem Sunar. Here are some of the features and benefits:
+
     +People using the application will be able to measure their knowledge.
     +People who use the application will also learn new things.
     +They will be able to compete on their own or with another user using the application.
