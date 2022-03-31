@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import java.sql.DriverManager
+import com.quizad.Connection.connection
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,10 +15,8 @@ class MainActivity : AppCompatActivity() {
 
         buton.setOnClickListener {
             Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
-        //  val jdbcUrl = ""
-        // val connection = DriverManager.getConnection(jdbcUrl, "quizad_com", "4)rY@8)5QXSAHpjH")
-
-        //println(connection.isValid(0))
+            connection()
+            showUsers()
         }
     }
 }
