@@ -18,7 +18,7 @@
         android:fontFamily="sans-serif"
         android:hapticFeedbackEnabled="false"
         android:includeFontPadding="false"
-        android:text="QuizApp"
+        android:text="Quizad"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/purple_500"
         android:textSize="30sp"
