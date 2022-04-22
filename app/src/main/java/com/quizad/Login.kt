@@ -1,7 +1,9 @@
 package com.quizad
 
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +13,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import java.sql.Connection
+import java.sql.DriverManager
 
 class Login : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
+    val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
+    val schema = "quizad_com"
+    val table = "Users"
+    val a = "asd"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +35,9 @@ class Login : AppCompatActivity() {
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("109847654913-infbfa1avk267dlddustjjod1k2ul338.apps.googleusercontent.com")
                 .requestEmail()
+                    .requestServerAuthCode("109847654913-infbfa1avk267dlddustjjod1k2ul338.apps.googleusercontent.com")
                 .build()
+
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
@@ -61,15 +72,20 @@ class Login : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task =
                 GoogleSignIn.getSignedInAccountFromIntent(data)
+            print("deneme")
             handleSignInResult(task)
+            print("deneme")
         }
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
             val account = completedTask.getResult(
                 ApiException::class.java
             )
+            Log.i("AES", account.grantedScopes.toString())
             // Signed in successfully
             val googleId = account?.id ?: ""
             Log.i("Google ID",googleId)
@@ -89,6 +105,9 @@ class Login : AppCompatActivity() {
             val googleIdToken = account?.idToken ?: ""
             Log.i("Google ID Token", googleIdToken)
 
+            val serverAuthCode = account?.serverAuthCode ?: ""
+            Log.i("Server Auth Code", serverAuthCode)
+
 
             val myIntent = Intent(this, DetailsActivity::class.java)
             myIntent.putExtra("google_id", googleId)
@@ -97,12 +116,29 @@ class Login : AppCompatActivity() {
             myIntent.putExtra("google_email", googleEmail)
             myIntent.putExtra("google_profile_pic_url", googleProfilePicURL)
             myIntent.putExtra("google_id_token", googleIdToken)
+            myIntent.putExtra("server_auth_code", serverAuthCode)
             this.startActivity(myIntent)
+
+                val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
+                val connection = DriverManager.getConnection(jdbcUrl, "quizad_com", "4)rY@8)5QXSAHpjH")
+
+            val sql = "INSERT INTO $table (`firstname`, `lastname`, `photourl`, `googleidtoken`, `serverauthcode`) VALUES ('$googleFirstName', '$googleLastName','$googleProfilePicURL','$googleIdToken', '$serverAuthCode')"
+            with(connection) {
+                createStatement().execute(sql)
+                commit()
+            }
+               // val query2 = connection.prepareStatement("INSERT INTO `Users`(`firstname`, `lastname`, `photourl`, `googleidtoken`, `serverauthcode`) VALUES ('$a','$a','$a','$a','$a')")
+                //query2.executeQuery()
+
+            //Look Here!
+            print(account)
+
         } catch (e: ApiException) {
             // Sign in was unsuccessful
             Log.e(
                 "failed code=", e.statusCode.toString()
             )
         }
+
     }
 }

@@ -15,6 +15,7 @@ class DetailsActivity : AppCompatActivity() {
         val googleEmail = intent.getStringExtra("google_email")
         val googleProfilePicURL = intent.getStringExtra("google_profile_pic_url")
         val googleAccessToken = intent.getStringExtra("google_id_token")
+        val serverAuthCode = intent.getStringExtra("server_auth_code")
 
         val googleIdTextView = findViewById<TextView>(R.id.google_id_textview)
         val googleFirstNameTextView = findViewById<TextView>(R.id.google_first_name_textview)
@@ -22,6 +23,7 @@ class DetailsActivity : AppCompatActivity() {
         val googleEmailTextView = findViewById<TextView>(R.id.google_email_textview)
         val googleProfilePicTextView = findViewById<TextView>(R.id.google_profile_pic_textview)
         val googleIdTokenTextView = findViewById<TextView>(R.id.google_id_token_textview)
+        val serverAuthCodeTextView = findViewById<TextView>(R.id.server_auth_code_textview)
 
         googleIdTextView.text = googleId
         googleFirstNameTextView.text = googleFirstName
@@ -29,6 +31,7 @@ class DetailsActivity : AppCompatActivity() {
         googleEmailTextView.text = googleEmail
         googleProfilePicTextView.text = googleProfilePicURL
         googleIdTokenTextView.text = googleAccessToken
+        serverAuthCodeTextView.text = serverAuthCode
 
     }
 }

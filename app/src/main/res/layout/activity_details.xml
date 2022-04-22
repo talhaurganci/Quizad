@@ -225,6 +225,39 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:background="@android:color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Server Auth Code"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white" />
+
+            <TextView
+                android:id="@+id/server_auth_code_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="Lorem Ipsum"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@android:color/white"/>
 
         </LinearLayout>
