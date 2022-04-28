@@ -34,10 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="350dp"
         android:width="315dip"
         android:ellipsize="middle"
-        android:text="Tek Kişilik Oyun"
+        android:text="Oyna"
         android:textSize="28sp" />
 
     <Button
@@ -45,9 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="250dp"
         android:width="315dip"
-        android:text="İki Kişilik Oyun"
+        android:text="Giriş Yap"
         android:textSize="28sp" />
 
     <Button

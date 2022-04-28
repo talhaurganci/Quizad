@@ -8,13 +8,30 @@
         android:id="@+id/google_login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerInParent="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
         android:background="@drawable/rounded_corners"
         android:drawableStart="@drawable/google_icon"
         android:drawablePadding="8dp"
         android:padding="8dp"
         android:text="Sign in with Google"
         android:textAllCaps="false"
-        android:textColor="@color/GoogleTextColor"
+        android:textColor="@color/white"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/signout_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignStart="@id/google_login_btn"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="350dp"
+        android:text="Çıkış Yap" />
 </RelativeLayout>

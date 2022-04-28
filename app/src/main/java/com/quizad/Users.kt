@@ -5,7 +5,7 @@ import java.sql.DriverManager
 import java.sql.SQLException
 import com.quizad.Connection.connection
 
-data class User(
+data class Users(
         val id: Int,
         val firstname: String,
         val lastname: String,

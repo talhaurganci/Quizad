@@ -20,16 +20,14 @@ class Login : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
     val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
-    val schema = "quizad_com"
     val table = "Users"
-    val a = "asd"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
         val login_buton = findViewById<Button>(R.id.google_login_btn)
+        val cikis_buton = findViewById<Button>(R.id.signout_button)
 
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -43,6 +41,9 @@ class Login : AppCompatActivity() {
 
         login_buton.setOnClickListener {
             signIn()
+        }
+        cikis_buton.setOnClickListener {
+            signOut()
         }
     }
 
@@ -72,9 +73,7 @@ class Login : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task =
                 GoogleSignIn.getSignedInAccountFromIntent(data)
-            print("deneme")
             handleSignInResult(task)
-            print("deneme")
         }
     }
 
@@ -119,18 +118,19 @@ class Login : AppCompatActivity() {
             myIntent.putExtra("server_auth_code", serverAuthCode)
             this.startActivity(myIntent)
 
+            fun addUsers() {
                 val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
                 val connection = DriverManager.getConnection(jdbcUrl, "quizad_com", "4)rY@8)5QXSAHpjH")
 
-            val sql = "INSERT INTO $table (`firstname`, `lastname`, `photourl`, `googleidtoken`, `serverauthcode`) VALUES ('$googleFirstName', '$googleLastName','$googleProfilePicURL','$googleIdToken', '$serverAuthCode')"
-            with(connection) {
-                createStatement().execute(sql)
-                commit()
+                val sql = "INSERT INTO $table (`firstname`, `lastname`, `photourl`, `googleidtoken`, `serverauthcode`) VALUES ('$googleFirstName', '$googleLastName','$googleProfilePicURL','$googleIdToken', '$serverAuthCode')"
+                with(connection) {
+                    createStatement().execute(sql)
+                    commit()
+                }
             }
-               // val query2 = connection.prepareStatement("INSERT INTO `Users`(`firstname`, `lastname`, `photourl`, `googleidtoken`, `serverauthcode`) VALUES ('$a','$a','$a','$a','$a')")
-                //query2.executeQuery()
 
-            //Look Here!
+            //addUsers()
+            //Kod askıya alındı.
             print(account)
 
         } catch (e: ApiException) {
@@ -139,6 +139,6 @@ class Login : AppCompatActivity() {
                 "failed code=", e.statusCode.toString()
             )
         }
-
     }
+
 }

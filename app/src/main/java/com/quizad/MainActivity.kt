@@ -1,14 +1,15 @@
 package com.quizad
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Button
 import android.widget.Toast
-import com.quizad.Connection.connection
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import java.sql.DriverManager
 import java.sql.SQLException
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         val buton = findViewById<Button>(R.id.button)
         val buton2 = findViewById<Button>(R.id.button2)
+        val buton3 = findViewById<Button>(R.id.button3)
 
         fun showUsers() {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
                 val result = query.executeQuery()
 
-                val users = mutableListOf<User>()
+                val users = mutableListOf<Users>()
 
                 while (result.next()) {
 
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
                     val serverauthcode = result.getString("serverauthcode")
 
-                    users.add(User(id ,firstname, lastname, photourl, googleidtoken, serverauthcode ))
+                    users.add(Users(id, firstname, lastname, photourl, googleidtoken, serverauthcode))
                 }
                 println(users)
 
@@ -57,6 +59,16 @@ class MainActivity : AppCompatActivity() {
             }
             catch (e: SQLException){
                 e.printStackTrace()
+            }
+        }
+
+        fun checkUserState() {
+            val account = GoogleSignIn.getLastSignedInAccount(this)
+            if (account == null) {
+                Toast.makeText(this@MainActivity, "Giriş Yapılmadı", Toast.LENGTH_SHORT).show()
+            }
+            if (account != null) {
+                Toast.makeText(this@MainActivity, "Giriş Yapıldı", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -70,6 +82,10 @@ class MainActivity : AppCompatActivity() {
             Intent(this, Login::class.java).apply {
                 startActivity(this)
             }
+        }
+        buton3.setOnClickListener {
+            checkUserState()
+
         }
     }
 }
