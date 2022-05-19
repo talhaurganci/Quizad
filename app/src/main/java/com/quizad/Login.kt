@@ -5,7 +5,9 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -20,7 +22,7 @@ class Login : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
     val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
-    val table = "Users"
+    val table = "users"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,15 @@ class Login : AppCompatActivity() {
         cikis_buton.setOnClickListener {
             signOut()
         }
+
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if(account==null){
+            cikis_buton.visibility= View.INVISIBLE
+        }
+        if(account!=null){
+            cikis_buton.visibility= View.VISIBLE
+            login_buton.visibility= View.INVISIBLE
+        }
     }
 
     private fun signIn() {
@@ -56,9 +67,12 @@ class Login : AppCompatActivity() {
 
     private fun signOut() {
         mGoogleSignInClient.signOut()
-            .addOnCompleteListener(this) {
-                // Update your UI here
-            }
+                .addOnCompleteListener(this) {
+                    Intent(this, MainActivity::class.java).apply {
+                        startActivity(this)
+                        Toast.makeText(this@Login, "Çıkış Yapıldı", Toast.LENGTH_SHORT).show()
+                    }
+                }
     }
 
     private fun revokeAccess() {
@@ -107,7 +121,6 @@ class Login : AppCompatActivity() {
             val serverAuthCode = account?.serverAuthCode ?: ""
             Log.i("Server Auth Code", serverAuthCode)
 
-
             val myIntent = Intent(this, DetailsActivity::class.java)
             myIntent.putExtra("google_id", googleId)
             myIntent.putExtra("google_first_name", googleFirstName)
@@ -128,7 +141,6 @@ class Login : AppCompatActivity() {
                     commit()
                 }
             }
-
             //addUsers()
             //Kod askıya alındı.
             print(account)

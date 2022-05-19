@@ -7,9 +7,15 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import java.sql.DriverManager
-import java.sql.SQLException
+import com.quizad.Connection.Connection
+import com.quizad.DataClasses.Users
+import org.ktorm.database.Database
+import org.ktorm.dsl.from
+import org.ktorm.dsl.select
 
+//import org.ktorm.database.Database
+//import org.ktorm.dsl.from
+//import org.ktorm.dsl.select
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +29,27 @@ class MainActivity : AppCompatActivity() {
         fun showUsers() {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
-            try {
+
                 val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
-                val connection = DriverManager.getConnection(jdbcUrl, "quizad_com", "4)rY@8)5QXSAHpjH")
+                val database = Database.connect(
+                    jdbcUrl,
+                    driver = "com.mysql.jdbc.Driver",
+                    user = "quizad_com",
+                    password = "4)rY@8)5QXSAHpjH"
+                )
 
-                println(connection.isValid(0))
+            for (row in database.from(Users).select()) {
+               val id: Int? = row[Users.id]
+                val firstname: String? = row[Users.firstname]
+                val lastname: String? = row[Users.lastname]
+                val photourl: String? = row[Users.photourl]
 
-                val query = connection.prepareStatement("SELECT * FROM Users")
+                println("$id, $firstname, $lastname, $photourl")
+            }
+
+                //val connection = DriverManager.getConnection(jdbcUrl, "quizad_com", "4)rY@8)5QXSAHpjH")
+
+               /* val query = connection.prepareStatement("SELECT * FROM users")
 
                 val result = query.executeQuery()
 
@@ -56,13 +76,11 @@ class MainActivity : AppCompatActivity() {
                 // val query2 = connection.prepareStatement("INSERT INTO `Users`(`firstname`, `lastname`, `photourl`, `googleidtoken`, `serverauthcode`) VALUES ('test','test','test','test','test')")
                 //query2.executeQuery()
                 //above code is working!!
-            }
-            catch (e: SQLException){
-                e.printStackTrace()
-            }
+                */
+
         }
 
-        fun checkUserState() {
+        fun checkLoginState() {
             val account = GoogleSignIn.getLastSignedInAccount(this)
             if (account == null) {
                 Toast.makeText(this@MainActivity, "Giriş Yapılmadı", Toast.LENGTH_SHORT).show()
@@ -73,19 +91,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         buton.setOnClickListener {
-            Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
             //connection()
-            showUsers()
-        }
-
-        buton2.setOnClickListener {
-            Intent(this, Login::class.java).apply {
+            //showUsers() Attention!
+            Intent(this, QuestionAnswerActivity::class.java).apply {
                 startActivity(this)
             }
         }
-        buton3.setOnClickListener {
-            checkUserState()
-
-        }
+            buton2.setOnClickListener {
+                Intent(this, Login::class.java).apply {
+                    startActivity(this)
+                }
+            }
+            buton3.setOnClickListener {
+                checkLoginState()
+            }
+        showUsers()
     }
 }
+

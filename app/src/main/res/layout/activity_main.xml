@@ -34,8 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
-        android:width="315dip"
+        android:layout_marginTop="200dp"
+        android:width="275dip"
         android:ellipsize="middle"
         android:text="Oyna"
         android:textSize="28sp" />
@@ -45,8 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-        android:width="315dip"
+        android:layout_marginTop="300dp"
+        android:width="275dip"
         android:text="Giriş Yap"
         android:textSize="28sp" />
 
@@ -55,8 +55,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="450dp"
-        android:width="315dip"
+        android:layout_marginTop="400dp"
+        android:width="275dip"
         android:text="Yardım"
         android:textSize="28sp" />
 

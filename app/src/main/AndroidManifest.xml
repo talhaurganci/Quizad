@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".DetailsActivity">
         </activity>
+        <activity android:name=".QuestionAnswerActivity">
+        </activity>
     </application>
 
 </manifest>

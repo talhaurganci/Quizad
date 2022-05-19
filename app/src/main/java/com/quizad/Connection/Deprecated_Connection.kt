@@ -1,11 +1,11 @@
-package com.quizad
+package com.quizad.Connection
 
 import android.os.StrictMode
 import java.sql.DriverManager
 import java.sql.SQLException
 
 
-object Connection {
+object Deprecated_Connection {
     @JvmStatic
     fun connection() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
