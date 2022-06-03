@@ -1,17 +1,16 @@
 package com.quizad
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.quizad.DataClasses.AnswersMapper
 import com.quizad.DataClasses.Question_Options
 import com.quizad.DataClasses.Questions
 import org.ktorm.database.Database
 import org.ktorm.dsl.*
-import org.ktorm.jackson.KtormModule
 
 class QuestionAnswerActivity : AppCompatActivity() {
 
@@ -29,65 +28,17 @@ class QuestionAnswerActivity : AppCompatActivity() {
         val option2 = findViewById<Button>(R.id.option2)
         val option3 = findViewById<Button>(R.id.option3)
         val option4 = findViewById<Button>(R.id.option4)
+        val questionNumberText = findViewById<TextView>(R.id.question_number)
 
-        /* fun getQuestions() {
-            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-            StrictMode.setThreadPolicy(policy)
-
-            val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
-            val database = Database.connect(
-                    jdbcUrl,
-                    driver = "com.mysql.jdbc.Driver",
-                    user = "quizad_com",
-                    password = "4)rY@8)5QXSAHpjH"
-            )
-
-            for (row in database.from(Questions).select().where { (Questions.difficulty eq 1) }) {
-                val id: Int? = row[Questions.id]
-                val questionText = row[Questions.question_text]
-                val difficulty = row[Questions.difficulty]
-
-                if (id != null) {
-                    questionsList.add(id)
-                    if (questionText != null) {
-                        questionsList.add(questionText)
-                        if (difficulty != null) {
-                            questionsList.add(difficulty)
-                        }
-                    }
-                }
+        fun getQuestionsRandomId() {
+            val soru_numarasi = questionCount+1
+            questionNumberText.setText("Soru "+soru_numarasi)
+            if (questionCount == 2) {
+                difficulty = 2
             }
-        }*/
-
-        /*fun getQuestionOptions() {
-            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-            StrictMode.setThreadPolicy(policy)
-
-            val jdbcUrl = "jdbc:mariadb://server.pinet.com.tr:3306/quizad_com"
-            val database = Database.connect(
-                    jdbcUrl,
-                    driver = "com.mysql.jdbc.Driver",
-                    user = "quizad_com",
-                    password = "4)rY@8)5QXSAHpjH"
-            )
-
-            for (row in database.from(Question_Options).select()) {
-                val id: Int? = row[Question_Options.question_id]
-                val answers: List<AnswersMapper>? = row[Question_Options.answers]
-
-                //println(row[Question_Options.question_id])
-
-                if (id != null) {
-                    questionOptionsList.add(id)
-                    if (answers != null) {
-                        questionOptionsList.addAll(answers)
-                    }
-                }
-                //println(mergedList)
+            if (questionCount == 4) {
+                difficulty = 3
             }
-        }*/
-
-        fun test() {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
@@ -99,7 +50,8 @@ class QuestionAnswerActivity : AppCompatActivity() {
                     password = "4)rY@8)5QXSAHpjH"
             )
 
-            for (row in database.from(Questions).select(Questions.id).where { (Questions.difficulty eq difficulty) }) {
+            for (row in database.from(Questions).select(Questions.id).where { (Questions.difficulty eq difficulty) and (Questions.id notEq random_id) }) {
+                println(random_id)
                 val questionid: Int? = row[Questions.id]
 
                 if (questionid != null) {
@@ -109,31 +61,17 @@ class QuestionAnswerActivity : AppCompatActivity() {
 
 
                 random_id = questionsIdList.random()
-
-                /*for (row in database.from(Question_Options).select().where { Question_Options.question_id eq 1 }) {
-
-                    val id: Int? = row[Question_Options.question_id]
-                    val answers: List<AnswersMapper>? = row[Question_Options.answers]
-
-                    //println(row[Question_Options.question_id])
-
-                    if (id != null) {
-                        questionOptionsList.add(id)
-                        if (answers != null) {
-                            questionOptionsList.addAll(answers)
-                        }
-                    }
-                    //println(mergedList)
-
-                }*/
             }
             questionCount++
-            // println(questionCount)
-            //println(questionsList.random())
-            //println(questionsList)
+            if (questionCount==7) {
+                Toast.makeText(this@QuestionAnswerActivity, "Tebrikler!", Toast.LENGTH_SHORT).show()
+                Intent(this, MainActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
         }
 
-        fun test2() {
+        fun getQuestionsAndAnswers() {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
@@ -151,17 +89,11 @@ class QuestionAnswerActivity : AppCompatActivity() {
                 val difficulty = row[Questions.difficulty]
 
                 question_text.setText(questionText)
-
-                //println("$questionid, $questionText, $difficulty")
-
                 for (row in database.from(Question_Options).select().where { Question_Options.question_id eq random_id }) {
-
-
                     val id: Int? = row[Question_Options.question_id]
-                    //val answers: List<AnswersMapper>? = row[Question_Options.answers]
                     val answers = row[Question_Options.answers] ?: emptyList()
 
-                    //println(row[Question_Options.question_id])
+
 
                     println(answers)
 /*
@@ -176,16 +108,64 @@ class QuestionAnswerActivity : AppCompatActivity() {
                     option3.text = answers[2].tr
                     option4.text = answers[3].tr
 
+                    option1.setOnClickListener {
+                        if (answers[0].is_correct == true) {
+                            getQuestionsRandomId()
+                            getQuestionsAndAnswers()
+                        } else {
+                            Toast.makeText(this@QuestionAnswerActivity, "Yanlış Cevap Verdiniz", Toast.LENGTH_SHORT).show()
+                            Intent(this, MainActivity::class.java).apply {
+                                startActivity(this)
+                            }
+                        }
+
+                    }
+
+                    option2.setOnClickListener {
+                        if (answers[1].is_correct == true) {
+                            getQuestionsRandomId()
+                            getQuestionsAndAnswers()
+                        } else {
+                            Toast.makeText(this@QuestionAnswerActivity, "Yanlış Cevap Verdiniz", Toast.LENGTH_SHORT).show()
+                            Intent(this, MainActivity::class.java).apply {
+                                startActivity(this)
+                            }
+                        }
+
+                    }
+
+                    option3.setOnClickListener {
+                        if (answers[2].is_correct == true) {
+                            getQuestionsRandomId()
+                            getQuestionsAndAnswers()
+                        } else {
+                            Toast.makeText(this@QuestionAnswerActivity, "Yanlış Cevap Verdiniz", Toast.LENGTH_SHORT).show()
+                            Intent(this, MainActivity::class.java).apply {
+                                startActivity(this)
+                            }
+                        }
+
+                    }
+
+                    option4.setOnClickListener {
+                        if (answers[3].is_correct == true) {
+                            getQuestionsRandomId()
+                            getQuestionsAndAnswers()
+                        } else {
+                            Toast.makeText(this@QuestionAnswerActivity, "Yanlış Cevap Verdiniz", Toast.LENGTH_SHORT).show()
+                            Intent(this, MainActivity::class.java).apply {
+                                startActivity(this)
+                            }
+                        }
+
+                    }
+
                 }
-
             }
+            questionsIdList.clear()
         }
-        //getQuestions()
-        //getQuestionOptions()
-        test()
-        //println(questionsIdList+"asd")
-        test2()
-        //println(questionsIdList)
-    }
-}
+            getQuestionsRandomId()
+            getQuestionsAndAnswers()
 
+        }
+    }

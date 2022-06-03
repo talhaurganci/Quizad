@@ -70,4 +70,12 @@
         android:layout_marginTop="425dp"
         android:ellipsize="none"
         android:text="Button" />
+
+    <TextView
+        android:id="@+id/question_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="TextView" />
 </RelativeLayout>
