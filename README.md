@@ -13,7 +13,7 @@ Quizad is a question and answer application developed by Talha Urgancı under th
     
  Note: The application is still under development.
 
-Ali Erdemir Sunar works as the General Manager of Pinet IT. Talha Urgancı works as an intern at pinet informatics. This application will continue to be developed during Talha Urgancı's internship period.
+Ali Erdem Sunar works as the General Manager of Pinet IT. Talha Urgancı works as an intern at pinet informatics. This application will continue to be developed during Talha Urgancı's internship period.
 
 For more information: info@pinet.com.tr, talhaurganci@gmail.com
 
